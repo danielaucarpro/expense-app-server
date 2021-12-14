@@ -13,8 +13,9 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     transaction: [{
       title: { type: String },
-      amount: { type: Number },
       date: { type: String },
+      categories: {type: String},
+      amount: { type: Number }
     }]
   },
   {

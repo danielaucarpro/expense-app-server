@@ -21,12 +21,13 @@ router.post('/', async (req, res) => {
         await User.updateOne({ email: emailToUse },
             {
                 $set: {
-                    transaction: [{ title: req.body.title, amount: req.body.amount, date: req.body.date },
+                    transaction: [{ title: req.body.title, date: req.body.date, categories: req.body.categories, amount: req.body.amount },
                     ...checkUser.transaction]
                 }
             })
         return res.status(200).json({
-            message: "Post Added Succesfully to User"
+            message: "Post successfully added!",
+            data: checkUser.transaction
         })
     } else {
         res.status(404).json({
@@ -34,15 +35,6 @@ router.post('/', async (req, res) => {
         })
     }
 })
-
-//share payment
-router.get('/shareExpenses', async (req, res) => {
-    //get the user names form body/headers
-
-    //find this names in the db
-
-    //post the transaction in everybody in the list and divide the amount value by the list lenght
-});
 
 //get user's transactions
 router.get('/getTransactions', async (req, res) => {
@@ -52,18 +44,20 @@ router.get('/getTransactions', async (req, res) => {
     //using token to check if is the same user who is posting
     const userEmail = jwt.decode(token);
     const emailToUse = userEmail.email;
-    const transactions = userEmail.transaction;
-    console.log(emailToUse, 'email');
-    console.log(transactions, 'transactions');
+    // console.log(emailToUse, 'email');
     //checking if the user exist
     const checkUser = await User.findOne({ email: emailToUse });
     console.log(checkUser.transaction, 'transactions');
 
     if (checkUser) {
         return res.status(200).json({
-            message: "Data laoded successfully",
+            message: "Data loaded successfully",
             data: checkUser.transaction
         });
+    } else {
+        res.status(404).json({
+            message: "User Not Found"
+        })
     }
 });
 
