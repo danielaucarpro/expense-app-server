@@ -12,7 +12,7 @@ const UserSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     transaction: [{
-      title: { type: String },
+      name: { type: String },
       date: { type: String },
       categories: {type: String},
       amount: { type: Number }
